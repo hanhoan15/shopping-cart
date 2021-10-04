@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import BoldText from './BoldText'
 
 export default function BasketPrice(props) {
@@ -15,3 +16,15 @@ export default function BasketPrice(props) {
   </div>
   )
 }
+
+BasketPrice.propTypes = {
+  price: PropTypes.number,
+  bold: PropTypes.bool,
+  title: PropTypes.string,
+};
+
+BasketPrice.defaultProps = {
+  price: 0,
+  bold: false,
+  title: '',
+};

@@ -1,6 +1,11 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { beginSelectedProduct, beginUpdateSelectedProducts, beginRemoveSelectedProducts } from "../../redux/actions/productsActions";
+import {
+  beginSelectedProduct,
+  beginUpdateSelectedProducts,
+  beginRemoveSelectedProducts
+} from "../../redux/actions/productsActions";
 
 export default function BasketItem(props) {
   const { item } = props;
@@ -29,27 +34,40 @@ export default function BasketItem(props) {
   return (
     <>
       {
-        item.id ? 
+        item.id ?
           <>
-            <div key={item.id} className="row">
-            <div className="col-2">{item.name}</div>
-            <div className="col-2">
-              <button onClick={()=>onAdd(item)} className="add">
-                +
-              </button>
-              <button onClick={()=>onRemove(item)} className="remove">
-                -
-              </button>
-            </div>
+            <div className="row">
+              <div className="col-2">{item.name}</div>
+              <div className="col-2">
+                <button onClick={()=>onAdd(item)} className="add">
+                  +
+                </button>
+                <button onClick={()=>onRemove(item)} className="remove">
+                  -
+                </button>
+              </div>
 
-            <div className="col-2 text-right">
-              {item.quantity} x ${item.price.toFixed(2)}
+              <div className="col-2 text-right">
+                {item.quantity} x ${item.price.toFixed(2)}
+              </div>
             </div>
-          </div>
-        </> : (
-          <div>...Loading</div>
-        )
+          </> : (
+            <div>...Loading</div>
+          )
       }
     </>
   )
 }
+
+BasketItem.propTypes = {
+  item: PropTypes.object,
+};
+
+BasketItem.defaultProps = {
+  item: {
+    id: 0,
+    name: '',
+    quantity: 0,
+    price: 0
+  },
+};

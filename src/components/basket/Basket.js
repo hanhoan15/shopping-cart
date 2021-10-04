@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import BasketItem from './BasketItem';
 import BasketPrice from './BasketPrice';
@@ -24,10 +24,21 @@ export default function Basket() {
     dispatch(beginSetCarts(onSuccess));
   }, [products]);
 
-  const itemsPrice = cartItems.reduce((a, c) => a + c.price*c.quantity, 0);
-  const taxPrice = itemsPrice * 0.14;
-  const shippingPrice = itemsPrice > 2000 ? 0 : 50;
-  const totalPrice = itemsPrice + taxPrice + shippingPrice;
+  const itemsPrice = useMemo(() => {
+    return cartItems.reduce((a, c) => a + c.price*c.quantity, 0);
+  }, [cartItems]);
+
+  const taxPrice = useMemo(() => {
+    return itemsPrice * 0.14;
+  }, [cartItems]);
+
+  const shippingPrice = useMemo(() => {
+    return itemsPrice > 2000 ? 0 : 50;
+  }, [cartItems]);
+
+  const totalPrice = useMemo(() => {
+    return itemsPrice + taxPrice + shippingPrice;
+  }, [cartItems]);
 
   return (
     <aside className="block col-1 line-height-1-7">
@@ -35,7 +46,7 @@ export default function Basket() {
       <div>
         {cartItems.length === 0 && <div>Cart is empty</div>}
         {cartItems.map((item) => (
-          <BasketItem item={item}/>
+          <BasketItem key={item.id} item={item}/>
         ))}
       </div>
 

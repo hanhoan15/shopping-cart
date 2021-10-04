@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux';
 import { beginSelectedProduct, beginUpdateSelectedProducts } from "../../redux/actions/productsActions";
 
@@ -7,7 +8,6 @@ export default function Product(props) {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.selectedProducts.items);
-
 
   const onAdd = (product) => {
     const exist = cartItems.find((x) => x.product_id === product.id);
@@ -29,3 +29,17 @@ export default function Product(props) {
     </div>
   )
 }
+
+Product.propTypes = {
+  id: PropTypes.number,
+  image: PropTypes.string,
+  name: PropTypes.string,
+  price: PropTypes.number,
+};
+
+Product.defaultProps = {
+  id: 0,
+  image: '',
+  name: '',
+  price: 0,
+};
