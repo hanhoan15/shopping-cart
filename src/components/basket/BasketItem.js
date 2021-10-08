@@ -7,8 +7,7 @@ import {
   beginRemoveSelectedProducts
 } from "../../redux/actions/productsActions";
 
-export default function BasketItem(props) {
-  const { item } = props;
+export default function BasketItem({ item }) {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.selectedProducts.items);

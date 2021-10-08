@@ -5,8 +5,7 @@ import { createSelector } from 'reselect';
 import Product from './Product'
 
 
-export default function ProductGroup(props) {
-  const { productGroup } = props
+export default function ProductGroup({ productGroup }) {
   const dispatch = useDispatch();
 
   const selectProducts = createSelector(

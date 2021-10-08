@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux';
 import { beginSelectedProduct, beginUpdateSelectedProducts } from "../../redux/actions/productsActions";
 
-export default function Product(props) {
-  const { product } = props;
+export default function Product({ product }) {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.selectedProducts.items);

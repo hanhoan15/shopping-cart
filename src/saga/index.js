@@ -4,6 +4,8 @@ import {
   setProducts,
   selectedProduct,
   setCarts,
+  updateSelectedProducts,
+  removeSelectedProducts,
 } from "../redux/actions/productsActions";
 import { ActionTypes } from "../redux/constants/action-types";
 import rsf from "../firestore";
@@ -12,16 +14,11 @@ import firebase from "firebase";
 function* getProducts({ categoryId, onSuccess }) {
   try {
     const colRef = firebase.firestore().collection("products")
-    const products = [];
 
     const response = yield call(rsf.firestore.getCollection, colRef.where("category_id", "==", parseInt(categoryId)))
-    response.forEach((doc) => {
-      const data = doc.data();
-      products.push({ id: doc.id, ...data });
-    });
     onSuccess(true);
 
-    yield put(setProducts(products));
+    yield put(setProducts(response));
   } catch (e) {
     console.error(e);
   }
@@ -29,16 +26,10 @@ function* getProducts({ categoryId, onSuccess }) {
 
 function* getProductCategories({ onSuccess }) {
   try {
-    const categories = [];
     const categories_response = yield call(rsf.firestore.getCollection, "categories");
 
-    categories_response.forEach((doc) => {
-      const data = doc.data();
-      categories.push({ id: doc.id, ...data });
-    });
-
     onSuccess(true);
-    yield put(setProductCategories(categories));
+    yield put(setProductCategories(categories_response));
   } catch (e) {
     console.error(e);
   }
@@ -46,14 +37,10 @@ function* getProductCategories({ onSuccess }) {
 
 function* getCarts({ onSuccess }) {
   try {
-    const products = [];
     const response = yield call(rsf.firestore.getCollection, 'carts')
-    response.forEach((doc) => {
-      const data = doc.data();
-      products.push({ id: doc.id, product_id: data.product_id, quantity: data.quantity });
-    });
+
     onSuccess(true);
-    yield put(setCarts(products));
+    yield put(setCarts(response));
   } catch (e) {
     console.error(e);
   }
@@ -66,14 +53,9 @@ function* addCart({ id }) {
       quantity: 1
     };
     yield call(rsf.firestore.addDocument, "carts", newCart);
-    
-    const products = [];
     const response = yield call(rsf.firestore.getCollection, 'carts')
-    response.forEach((doc) => {
-      const data = doc.data();
-      products.push({ id: doc.id, product_id: data.product_id, quantity: data.quantity });
-    });
-    yield put(selectedProduct(products));
+
+    yield put(selectedProduct(response));
   } catch (e) {
     console.error(e);
   }
@@ -87,14 +69,9 @@ function* updateCart({ id, quantity }) {
       "quantity",
       quantity
     );
-
-    const products = [];
     const response = yield call(rsf.firestore.getCollection, 'carts')
-    response.forEach((doc) => {
-      const data = doc.data();
-      products.push({ id: doc.id, product_id: data.product_id, quantity: data.quantity });
-    });
-    yield put(selectedProduct(products));
+
+    yield put(updateSelectedProducts(response));
   } catch (e) {
     console.error(e);
   }
@@ -103,14 +80,9 @@ function* updateCart({ id, quantity }) {
 function* deleteCart({id}) {
   try {
     yield call(rsf.firestore.deleteDocument, `carts/${id}`);
-
-    const products = [];
     const response = yield call(rsf.firestore.getCollection, 'carts')
-    response.forEach((doc) => {
-      const data = doc.data();
-      products.push({ id: doc.id, product_id: data.product_id, quantity: data.quantity });
-    });
-    yield put(selectedProduct(products));
+
+    yield put(removeSelectedProducts(response));
   } catch (error) {
     console.error(error);
   }

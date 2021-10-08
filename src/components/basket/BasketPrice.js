@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import BoldText from './BoldText'
 
-export default function BasketPrice(props) {
-  const { price, bold, title } = props
+export default function BasketPrice({ price, bold, title }) {
 
   return (
     <div className="row">

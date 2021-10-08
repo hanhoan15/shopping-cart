@@ -15,7 +15,7 @@ export default function Header() {
       <div>
         <a href="#/cart">
           Cart {' '}
-          {countCartItems ? (<button className="badge">{countCartItems}</button>) : ('')}
+          {countCartItems > 0 && (<button className="badge">{countCartItems}</button>)}
         </a>
       </div>
     </header>
